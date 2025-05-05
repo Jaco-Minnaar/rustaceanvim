@@ -76,7 +76,7 @@ function M.explain_error()
   close_hover()
   local win_id = vim.api.nvim_get_current_win()
   local opts = {
-    cursor_position = vim.api.nvim_win_get_cursor(win_id),
+    pos = vim.api.nvim_win_get_cursor(win_id),
     severity = vim.diagnostic.severity.ERROR,
     wrap = true,
   }
@@ -106,14 +106,14 @@ function M.explain_error()
     end
     pos_id = vim.inspect(pos)
     -- diagnostics are (0,0)-indexed but cursors are (1,0)-indexed
-    opts.cursor_position = { pos[1] + 1, pos[2] }
+    opts.pos = { pos[1] + 1, pos[2] }
     local searched_all = pos_map[pos_id] ~= nil
   until diagnostic == nil or found or searched_all
   if not found then
     -- Fall back to first diagnostic
     diagnostic = diagnostics[1]
     local pos = { diagnostic.lnum, diagnostic.col }
-    opts.cursor_position = pos
+    opts.pos = pos
     return
   end
 
@@ -314,7 +314,7 @@ function M.render_diagnostic()
   close_hover()
   local win_id = vim.api.nvim_get_current_win()
   local opts = {
-    cursor_position = vim.api.nvim_win_get_cursor(win_id),
+    pos = vim.api.nvim_win_get_cursor(win_id),
     wrap = true,
   }
   local rendered_diagnostic
@@ -343,7 +343,7 @@ function M.render_diagnostic()
     end
     pos_id = vim.inspect(pos)
     -- diagnostics are (0,0)-indexed but cursors are (1,0)-indexed
-    opts.cursor_position = { pos[1] + 1, pos[2] }
+    opts.pos = { pos[1] + 1, pos[2] }
     local searched_all = pos_map[pos_id] ~= nil
   until diagnostic == nil or rendered_diagnostic ~= nil or searched_all
   if not rendered_diagnostic then
